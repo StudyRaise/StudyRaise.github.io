@@ -1,0 +1,75 @@
+.app-login {
+  height: 100vh;
+  background: url('~@/assets/app-login/app-login-bg.png') no-repeat left top/cover;
+}
+
+.login-icon {
+  position: fixed;
+  z-index: 4;
+  top: 30px;
+  left: 40px;
+  // width: 278px;
+  height: 50px;
+}
+
+.login-form {
+  position: fixed;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  padding: 72px 60px 44px;
+  box-sizing: border-box;
+  background-color: #fff;
+  user-select: none;
+}
+
+.login-form-title {
+  font-size: 28px;
+  text-align: center;
+}
+
+.login-form-subhead {
+  color: var(--color-text-4);
+  text-align: center;
+  padding: 14px 0 40px;
+}
+
+.input-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.code-row {
+  display: flex;
+  column-gap: 10px;
+
+  .el-input {
+    flex: 1;
+  }
+}
+
+.row-code-image {
+  width: 133px;
+  height: 50px;
+}
+
+.button-login {
+  height: 50px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  line-height: 50px;
+  background: linear-gradient(90deg, #0844eb 0%, #15b3df 100%);
+  border-radius: 4px;
+}
+
+::v-deep .el-input__inner {
+  height: 50px;
+}
+
+::v-deep .el-input__prefix {
+  display: flex;
+  align-items: center;
+}
