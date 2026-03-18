@@ -17,6 +17,7 @@ function getCurrentDate() {
   return `${year}-${month}-${day} ${hour}-${minute}-${seconds}`;
 }
 module.exports = {
+  homepage: "https://studyraise.github.io/project",
   // 基本路径
   publicPath: './',
   // 输出文件目录
