@@ -1,9 +1,3 @@
-const path = require('path')
-
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-
 const productionGzipExtensions = ['js', 'css']
 // 获取当前时间
 function getCurrentDate() {
@@ -17,7 +11,6 @@ function getCurrentDate() {
   return `${year}-${month}-${day} ${hour}-${minute}-${seconds}`;
 }
 module.exports = {
-  homepage: "https://studyraise.github.io/project",
   // 基本路径
   publicPath: './',
   // 输出文件目录
@@ -34,8 +27,8 @@ module.exports = {
   productionSourceMap: false,
   // webpack配置
   css: {
-    // 启用 CSS modules (使用 requireModuleExtension 代替废弃的 modules)
-    requireModuleExtension: true,
+    // 启用 CSS modules
+    modules: false,
     // 是否使用css分离插件
     extract: true,
     // 开启 CSS source maps，一般不建议开启
@@ -50,12 +43,6 @@ module.exports = {
 			msTileImage: 'favicon.ico'
 		}
 	},
-  transpileDependencies: [
-    'element-ui',
-    'axios',
-    'vuex',
-    'vue-router'
-  ],
   // 图片资源不加hash
   chainWebpack: config => {
     config.module
@@ -65,8 +52,6 @@ module.exports = {
         options.fallback.options.name = 'static/img/[name].[ext]';
         return options;
       });
-    config.resolve.alias
-      .set('@', resolve('src'))
     },
   // webpack-dev-server 相关配置 https://webpack.js.org/configuration/dev-server/
   devServer: {

@@ -1,5 +1,6 @@
 {
   "name": "jnnj",
+  "homepage": "https://studyraise.github.io/dist/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -30,9 +31,8 @@
     "vue-template-compiler": "^2.6.10"
   },
   "browserslist": [
-    "> 0.25%",
-    "last 2 versions",
-    "IE 11"
+    "> 1%",
+    "last 2 versions"
   ],
   "volta": {
     "node": "14.21.3"
