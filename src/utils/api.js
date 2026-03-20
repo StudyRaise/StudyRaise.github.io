@@ -223,7 +223,7 @@ export const getRequestNoToken2 = (url, params) => {
 	});
 };
 
-axios.defaults.baseURL = location.origin
-// axios.defaults.baseURL = 'http://192.168.0.234:9528'
+// axios.defaults.baseURL = location.origin
+axios.defaults.baseURL = 'http://192.168.0.234:9528'
 
 export default axios

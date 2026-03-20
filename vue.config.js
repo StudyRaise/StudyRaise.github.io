@@ -1,9 +1,3 @@
-const path = require('path')
-
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-
 const productionGzipExtensions = ['js', 'css']
 // 获取当前时间
 function getCurrentDate() {
@@ -20,8 +14,7 @@ module.exports = {
   // 基本路径
   publicPath: './',
   // 输出文件目录
-  // outputDir: '武汉市一文件查看-' + getCurrentDate(),
-  outputDir: 'dist',
+  outputDir: '武汉市一文件查看-' + getCurrentDate(),
   // eslint-loader 是否在保存的时候检查
   lintOnSave: false,
   // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
@@ -34,8 +27,8 @@ module.exports = {
   productionSourceMap: false,
   // webpack配置
   css: {
-    // 启用 CSS modules (使用 requireModuleExtension 代替废弃的 modules)
-    requireModuleExtension: true,
+    // 启用 CSS modules
+    modules: false,
     // 是否使用css分离插件
     extract: true,
     // 开启 CSS source maps，一般不建议开启
@@ -50,12 +43,6 @@ module.exports = {
 			msTileImage: 'favicon.ico'
 		}
 	},
-  transpileDependencies: [
-    'element-ui',
-    'axios',
-    'vuex',
-    'vue-router'
-  ],
   // 图片资源不加hash
   chainWebpack: config => {
     config.module
@@ -65,8 +52,6 @@ module.exports = {
         options.fallback.options.name = 'static/img/[name].[ext]';
         return options;
       });
-    config.resolve.alias
-      .set('@', resolve('src'))
     },
   // webpack-dev-server 相关配置 https://webpack.js.org/configuration/dev-server/
   devServer: {
