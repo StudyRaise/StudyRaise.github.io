@@ -1,39 +1,24 @@
-name: todoList 自动部署 # 工作流名称
-
+name: todoList 自动部署
 on:
   push:
     branches:
-      - main # 触发条件：当代码推送到 main 分支时执行自动部署
-
+      - main
 jobs:
   deploy:
-    runs-on: ubuntu-latest # 指定运行环境为最新版的 Ubuntu 系统
+    runs-on: ubuntu-latest
     steps:
-      - name: 📥 检出代码 # 步骤1：检出当前仓库代码
-        uses: actions/checkout@v3
-
-      # 修复问题1：同一个 step 中不能出现多个 uses 关键字。必须将 pnpm 的配置单独拆分为一个 step。
-      # （注：如果你的项目实际上只使用了 npm，这一步其实可以安全删除）
-      - name: 📦 设置 pnpm 
-        uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
         with:
           version: 8.6.2
-          
-      - name: ⎔ 设置 Node.js # 步骤2：配置 Node.js 运行环境
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14' # 修复问题2：版本号建议加上单引号，避免 YAML 解析问题
-        
-      # 修复问题3：uses 和 run 不能在同一个 step 混用，并且同一个 step 也不允许有多个同名的 run 键。需拆分为多个独立 step。
-      - name: 🔧 安装依赖 # 步骤3：执行项目依赖安装
-        run: npm install
-        
-      - name: 🏗️ 构建项目 # 步骤4：执行打包构建命令
-        run: npm run build
-        
-      - name: 🚀 部署到 GitHub Pages # 步骤5：将打包后的 dist 目录推送到 gh-pages 分支
+          node-version: 16.X
+      - run: npm install
+      - run: npm run build
+      - name: action-Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.DEPLOY_SECRET }} # 部署所需的 GitHub 凭证 Token
-          publish_branch: gh-pages # 修复问题4：该 action 指定分支的标准参数名应为 publish_branch，而非 BRANCH
-          publish_dir: ./dist # 指定需要发布的静态文件目录
+          github_token: ${{ secrets.DEPLOY_SECRET }}
+          BRANCH: gh-pages
+          publish_dir: ./dist
