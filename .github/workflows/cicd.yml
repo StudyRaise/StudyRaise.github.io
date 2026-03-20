@@ -31,6 +31,7 @@ jobs:
       - name: 🏗️ 构建项目 # 步骤4：执行打包构建命令
         run: npm run build
         
+        
       - name: 🚀 部署到 GitHub Pages # 步骤5：将打包后的 dist 目录推送到 gh-pages 分支
         uses: peaceiris/actions-gh-pages@v3
         with:
