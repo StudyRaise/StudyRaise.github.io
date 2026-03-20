@@ -1,8 +1,8 @@
 <template>
   <!-- pdf查看 -->
   <div class="pdfReport" v-loading="loading" element-loading-text="加载中...">
-    <iframe v-if="pdfUrl" :src="pdfUrl" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-    <div class="tip-title" v-show="!pdfUrl">暂无数据</div>
+    <iframe v-show="showIframe" ref="pdfFrame" :src="iframeSrc"  width="100%" height="100%" frameborder="0" @load="onIframeLoad"></iframe>
+    <div class="tip-title" v-show="!showIframe">暂无数据</div>
   </div>
 </template>
 
@@ -11,17 +11,22 @@ export default {
   name: "pdfReport",
   data() {
     return {
-      pdfUrl: null,
+      iframeSrc: '',
       loading:false,
+      pdfData: null,
+      iframeLoaded: false,
+      showIframe: false
     };
   },
-  created() { },
+  created() { 
+  },
   beforeDestroy() {
-    if (this.pdfUrl) {
-      URL.revokeObjectURL(this.pdfUrl)
-    }
+    // 释放资源
+    this.pdfData = null;
   },
   mounted() {
+    // 初始化 iframe src
+    this.iframeSrc = '/pdf/web/viewer.html?file=';
     this.getpdfUrl()
   },
   methods: {
@@ -36,26 +41,45 @@ export default {
         const res = await this.$AllService.reportService.getReportPdf(key)
         
         if (res.data) {
-          if (this.pdfUrl) {
-            URL.revokeObjectURL(this.pdfUrl)
-          }
-          let blob = new Blob([res.data], { type: 'application/pdf' })
-          this.pdfUrl = URL.createObjectURL(blob)
-          
-          // IE11 兼容性处理
-          if (!!window.ActiveXObject || "ActiveXObject" in window) {
-             // IE11 下使用 PDF.js viewer 加载
-             this.pdfUrl = './pdf/web/viewer.html?file=' + encodeURIComponent(this.pdfUrl)
-          }
+          // 将 Blob 转换为 ArrayBuffer 以兼容 IE11
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.pdfData = new Uint8Array(reader.result);
+            this.showIframe = true;
+            this.tryRenderPdf();
+          };
+          reader.readAsArrayBuffer(res.data);
+        } else {
+            this.showIframe = false;
         }
         this.loading = false
       } catch (error) {
         this.loading = false
-
+        this.showIframe = false;
+        console.error(error);
       }
-    
-
     },
+    onIframeLoad() {
+      this.iframeLoaded = true;
+      this.tryRenderPdf();
+    },
+    tryRenderPdf() {
+      if (this.iframeLoaded && this.pdfData && this.$refs.pdfFrame && this.$refs.pdfFrame.contentWindow) {
+        try {
+          const viewerApp = this.$refs.pdfFrame.contentWindow.PDFViewerApplication;
+          if (viewerApp) {
+             viewerApp.open(this.pdfData);
+          } else {
+             // 如果 viewerApp 还没初始化完成，稍后重试
+             setTimeout(() => {
+                this.tryRenderPdf();
+             }, 500);
+          }
+        } catch (e) {
+          console.error('PDF viewer error:', e);
+        }
+      }
+    }
   },
 };
 </script>
