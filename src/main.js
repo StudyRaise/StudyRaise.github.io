@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime"; // 新增这一行
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
