@@ -22,7 +22,7 @@ jobs:
       - name: ⎔ 设置 Node.js # 步骤2：配置 Node.js 运行环境
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # 修复问题2：版本号建议加上单引号，避免 YAML 解析问题
+          node-version: '14' # 修复问题2：版本号建议加上单引号，避免 YAML 解析问题
         
       # 修复问题3：uses 和 run 不能在同一个 step 混用，并且同一个 step 也不允许有多个同名的 run 键。需拆分为多个独立 step。
       - name: 🔧 安装依赖 # 步骤3：执行项目依赖安装
